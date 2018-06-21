@@ -16,50 +16,52 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Schedule {
 
-    public Map pointMap = new HashMap<String,String>();
+    public Map nodeMap = new HashMap<String,String>();
     public Map taskMap = new HashMap<String,TaskInfo>();
-    public Map pointMapTask = new HashMap<String,List<Map>>();
+    public Map nodeTask = new HashMap<String,List<Map>>();
     public List<Map> taskQueue = new ArrayList<Map>();
-
+    //初始化
     public int init() {
-        pointMap.clear();
+        nodeMap.clear();
         taskMap.clear();
-        pointMapTask.clear();
+        nodeTask.clear();
         taskQueue.clear();
         return ReturnCodeKeys.E001;
     }
 
-
-    public int registerpoint(int pointId) {
-        if(pointId <= 0){
+   //注册节点
+    public int registernode(int nodeId) {
+        if(nodeId <= 0){
             return ReturnCodeKeys.E004;
         }
-        if (pointMap.get(String.valueOf(pointId)) != null){
+        if (nodeMap.get(String.valueOf(nodeId)) != null){
             return ReturnCodeKeys.E005;
         }
-        pointMap.put(String.valueOf(pointId),String.valueOf(pointId));
+        nodeMap.put(String.valueOf(nodeId),String.valueOf(nodeId));
         return ReturnCodeKeys.E003;
     }
-
-    public int unregisterpoint(int pointId) {
-        if(pointId <= 0 ){
+	
+	
+   //注销节点
+    public int unregisternode(int nodeId) {
+        if(nodeId <= 0 ){
             return ReturnCodeKeys.E004;
         }
-        if(pointMap.get(String.valueOf(pointId)) == null){
+        if(nodeMap.get(String.valueOf(nodeId)) == null){
             return ReturnCodeKeys.E007;
         }
-        pointMap.remove(String.valueOf(pointId));
-        if(pointMapTask.get(String.valueOf(pointId)) != null){
-            List<Map> list = (List<Map>)pointMapTask.get(String.valueOf(pointId));
+        nodeMap.remove(String.valueOf(nodeId));
+        if(nodeTask.get(String.valueOf(nodeId)) != null){
+            List<Map> list = (List<Map>)nodeTask.get(String.valueOf(nodeId));
             for(Map map:list){
                 taskQueue.add(map);
             }
         }
-        pointMapTask.remove(String.valueOf(pointId));
+        nodeTask.remove(String.valueOf(nodeId));
         return ReturnCodeKeys.E006;
     }
 
-
+   //添加任务
     public int addTask(int taskId, int consumption) {
         if(taskId <= 0){
             return ReturnCodeKeys.E009;
@@ -73,7 +75,7 @@ public class Schedule {
         return ReturnCodeKeys.E008;
     }
 
-
+   //删除任务
     public int deleteTask(int taskId) {
         if(taskId <= 0){
             return ReturnCodeKeys.E009;
