@@ -16,46 +16,46 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Schedule {
 
-    public Map nodeMap = new HashMap<String,String>();
+    public Map pointMap = new HashMap<String,String>();
     public Map taskMap = new HashMap<String,TaskInfo>();
-    public Map nodeMapTask = new HashMap<String,List<Map>>();
+    public Map pointMapTask = new HashMap<String,List<Map>>();
     public List<Map> taskQueue = new ArrayList<Map>();
 
     public int init() {
-        nodeMap.clear();
+        pointMap.clear();
         taskMap.clear();
-        nodeMapTask.clear();
+        pointMapTask.clear();
         taskQueue.clear();
         return ReturnCodeKeys.E001;
     }
 
 
-    public int registerNode(int nodeId) {
-        if(nodeId <= 0){
+    public int registerpoint(int pointId) {
+        if(pointId <= 0){
             return ReturnCodeKeys.E004;
         }
-        if (nodeMap.get(String.valueOf(nodeId)) != null){
+        if (pointMap.get(String.valueOf(pointId)) != null){
             return ReturnCodeKeys.E005;
         }
-        nodeMap.put(String.valueOf(nodeId),String.valueOf(nodeId));
+        pointMap.put(String.valueOf(pointId),String.valueOf(pointId));
         return ReturnCodeKeys.E003;
     }
 
-    public int unregisterNode(int nodeId) {
-        if(nodeId <= 0 ){
+    public int unregisterpoint(int pointId) {
+        if(pointId <= 0 ){
             return ReturnCodeKeys.E004;
         }
-        if(nodeMap.get(String.valueOf(nodeId)) == null){
+        if(pointMap.get(String.valueOf(pointId)) == null){
             return ReturnCodeKeys.E007;
         }
-        nodeMap.remove(String.valueOf(nodeId));
-        if(nodeMapTask.get(String.valueOf(nodeId)) != null){
-            List<Map> list = (List<Map>)nodeMapTask.get(String.valueOf(nodeId));
+        pointMap.remove(String.valueOf(pointId));
+        if(pointMapTask.get(String.valueOf(pointId)) != null){
+            List<Map> list = (List<Map>)pointMapTask.get(String.valueOf(pointId));
             for(Map map:list){
                 taskQueue.add(map);
             }
         }
-        nodeMapTask.remove(String.valueOf(nodeId));
+        pointMapTask.remove(String.valueOf(pointId));
         return ReturnCodeKeys.E006;
     }
 
